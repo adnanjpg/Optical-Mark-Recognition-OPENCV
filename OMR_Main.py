@@ -2,11 +2,12 @@ import cv2
 import numpy as np
 import utlis
 
+import os
 
 ########################################################################
 webCamFeed = True
-pathImage = "5.jpg"
-cap = cv2.VideoCapture(1)
+pathImage = "1.jpg"
+cap = cv2.VideoCapture(0)
 cap.set(10,160)
 heightImg = 700
 widthImg  = 700
@@ -129,7 +130,13 @@ while True:
 
     # SAVE IMAGE WHEN 's' key is pressed
     if cv2.waitKey(1) & 0xFF == ord('s'):
-        cv2.imwrite("Scanned/myImage"+str(count)+".jpg",imgFinal)
+        folderName = 'Scanned'
+        
+        # if the folder is not created yet, create it
+        if not os.path.exists(folderName):
+            os.mkdir(folderName)
+
+        cv2.imwrite(folderName + "/myImage"+str(count)+".jpg",imgFinal)
         cv2.rectangle(stackedImage, ((int(stackedImage.shape[1] / 2) - 230), int(stackedImage.shape[0] / 2) + 50),
                       (1100, 350), (0, 255, 0), cv2.FILLED)
         cv2.putText(stackedImage, "Scan Saved", (int(stackedImage.shape[1] / 2) - 200, int(stackedImage.shape[0] / 2)),
