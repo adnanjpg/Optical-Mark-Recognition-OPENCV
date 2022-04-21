@@ -1,6 +1,8 @@
 import cv2
 import numpy as np
 
+import os
+
 ## TO STACK ALL THE IMAGES IN ONE WINDOW
 def stackImages(imgArray,scale,lables=[]):
     rows = len(imgArray)
@@ -119,6 +121,20 @@ def showAnswers(img,myIndex,grading,ans,questions=5,choices=5):
             cv2.circle(img,((correctAns * secW)+secW//2, (x * secH)+secH//2),
             20,myColor,cv2.FILLED)
 
+savedScansCount = 0
 
+def saveScannedImg(imgFinal):
+        global savedScansCount
 
+        folderName = 'output'
+        
+        # if the folder is not created yet, create it
+        if not os.path.exists(folderName):
+            os.mkdir(folderName)
 
+        # save the Image
+        imgP = folderName + "/" + str(savedScansCount)+ ".jpg"
+        cv2.imwrite(imgP, imgFinal)
+
+        savedScansCount += 1
+   
