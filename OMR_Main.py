@@ -10,6 +10,7 @@ heightImg = 700
 widthImg  = 700
 
 cap = cv2.VideoCapture(0)
+#TODO
 cap.set(10,160)
 
 questions = 5
@@ -20,7 +21,7 @@ ans = [1,2,0,2,4]
 # endless loop
 while True:
 
-    if webCamFeed:success, img = cap.read()
+    if webCamFeed: success, img = cap.read()
     else: img = cv2.imread(pathImage)
 
     # RESIZE IMAGE
@@ -34,7 +35,7 @@ while True:
     imgGray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 
     # ADD GAUSSIAN BLUR
-    imgBlur = cv2.GaussianBlur(imgGray, (5, 5), 1) 
+    imgBlur = cv2.GaussianBlur(imgGray, (5,5), 1) 
 
     # APPLY CANNY 
     imgCanny = cv2.Canny(imgBlur,10,70)
@@ -148,6 +149,19 @@ while True:
     stackedImage = utils.stackImages(imageArray, 0.5, lables)
     cv2.imshow("Result", stackedImage)
 
-    # SAVE IMAGE WHEN 's' key is pressed
-    if cv2.waitKey(1) & 0xFF == ord('s'):
+    # cv2.waitKey takes a num as an input
+    # the input is n. if the input is positive
+    # the program will wait for n milliseconds
+    # before it continues.
+    # if the input is zero ofnegative, the 
+    # program will wait for a key press before
+    # continuing.
+    #
+    # pressed key
+    pressedKey = (cv2.waitKey(1) & 0xFF)
+    # save image when 's' key is pressed
+    if pressedKey == ord('s'):
         utils.saveScannedImg(imgFinal)
+    # quit when 'q' is pressed
+    if pressedKey == ord('q'):
+        break
