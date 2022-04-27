@@ -20,7 +20,7 @@ def stackImages(imgArray,scale,lables=[]):
 
             imgArray[x][y] = cv2.resize(imgArray[x][y], (0, 0), None, scale, scale)
             if len(imgArray[x][y].shape) == 2:
-                imgArray[x][y]= cv2.cvtColor( imgArray[x][y], cv2.COLOR_GRAY2BGR)
+                imgArray[x][y]= cv2.cvtColor(imgArray[x][y], cv2.COLOR_GRAY2RGB)
 
     imageBlank = np.zeros((height, width, 3), np.uint8)
     hor = [imageBlank]*rows
@@ -46,8 +46,10 @@ def stackImages(imgArray,scale,lables=[]):
 
 def reorder(myPoints):
 
+    print('before myPoints'+ '\n'+ str(myPoints))
     myPoints = myPoints.reshape((4, 2)) # REMOVE EXTRA BRACKET
-    print(myPoints)
+    print('myPoints'+'\n'+ str(myPoints))
+    print('\n\n')
     myPointsNew = np.zeros((4, 1, 2), np.int32) # NEW MATRIX WITH ARRANGED POINTS
     add = myPoints.sum(1)
     print(add)
@@ -126,17 +128,17 @@ def showAnswers(img,myIndex,grading,ans,questions=5,choices=5):
 savedScansCount = 0
 
 def saveScannedImg(imgFinal):
-        global savedScansCount
+    global savedScansCount
 
-        folderName = 'output'
-        
-        # if the folder is not created yet, create it
-        if not os.path.exists(folderName):
-            os.mkdir(folderName)
+    folderName = 'output'
+    
+    # if the folder is not created yet, create it
+    if not os.path.exists(folderName):
+        os.mkdir(folderName)
 
-        # save the Image
-        imgP = folderName + "/" + str(savedScansCount)+ ".jpg"
-        cv2.imwrite(imgP, imgFinal)
+    # save the Image
+    imgP = folderName + "/" + str(savedScansCount)+ ".jpg"
+    cv2.imwrite(imgP, imgFinal)
 
-        savedScansCount += 1
+    savedScansCount += 1
    

@@ -3,29 +3,32 @@ import numpy as np
 import utils
 
 ########################################################################
-webCamFeed = False
+webCamFeed = True
 pathImage = "input/1.jpg"
 
-heightImg = 700
-widthImg  = 700
-
-cap = cv2.VideoCapture(0)
-#TODO
-cap.set(10,160)
+heightImg = 1000
+widthImg  = 1000
 
 questions = 5
 choices = 5
 ans = [1,2,0,2,4]
 ########################################################################
- 
+
+if webCamFeed:
+    cap = cv2.VideoCapture(0)
+    #TODO
+    cap.set(10,160)
+else: img = cv2.imread(pathImage)
+
 # endless loop
 while True:
 
-    if webCamFeed: success, img = cap.read()
-    else: img = cv2.imread(pathImage)
+    if webCamFeed:
+        success, img = cap.read()
 
     # RESIZE IMAGE
     img = cv2.resize(img, (widthImg, heightImg)) 
+
     imgFinal = img.copy()
 
     # np.zeros will create a matrix filled with zeros,
@@ -80,6 +83,7 @@ while True:
 
             # SECOND BIGGEST RECTANGLE WARPING
             cv2.drawContours(imgBigContour, gradePoints, -1, (255, 0, 0), 20) # DRAW THE BIGGEST CONTOUR
+
             gradePoints = utils.reorder(gradePoints) # REORDER FOR WARPING
             ptsG1 = np.float32(gradePoints)  # PREPARE POINTS FOR WARP
             ptsG2 = np.float32([[0, 0], [325, 0], [0, 150], [325, 150]])  # PREPARE POINTS FOR WARP
@@ -150,7 +154,7 @@ while True:
     lables = [["Original","Gray","Edges","Contours"],
               ["Biggest Contour","Threshold","Warpped","Final"]]
 
-    stackedImage = utils.stackImages(imageArray, 0.5, lables)
+    stackedImage = utils.stackImages(imageArray, 1, lables)
     cv2.imshow("Result", stackedImage)
 
     # cv2.waitKey takes a num as an input
@@ -162,10 +166,11 @@ while True:
     # continuing.
     #
     # pressed key
-    pressedKey = (cv2.waitKey(1) & 0xFF)
+    pressedKey = (cv2.waitKey(100) & 0xFF)
     # save image when 's' key is pressed
     if pressedKey == ord('s'):
         utils.saveScannedImg(imgFinal)
     # quit when 'q' is pressed
     if pressedKey == ord('q'):
+        print('qqqqqqqqq')
         break
